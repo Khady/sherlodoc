@@ -62,7 +62,7 @@ let find_inter ~shards names =
       let db = shard.Storage.db in
       let r =
         sort @@ inter_list
-        @@ List.map
+        @@ ExtLib.List.map
              (fun (name, count) ->
                collapse_count ~count
                @@ collapse_trie_with_poly name
@@ -76,7 +76,7 @@ let find_inter ~shards names =
 
 let find_names ~shards names =
   let names =
-    List.map
+    ExtLib.List.map
       (fun n -> List.rev (Db.list_of_string (String.lowercase_ascii n)))
       names
   in
@@ -86,7 +86,7 @@ let find_names ~shards names =
       let open Lwt.Syntax in
       let+ () = Lwt.pause () in
       let candidates =
-        List.map
+        ExtLib.List.map
           (fun name ->
             let t = Tchar.find name db_names in
             collapse_triechar t)

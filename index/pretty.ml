@@ -54,11 +54,11 @@ and string_of_element = function
 
 and string_of_link_content lst =
   H.span
-    (List.map (fun r -> string_of_non_link r.Odoc_model.Location_.value) lst)
+    (ExtLib.List.map (fun r -> string_of_non_link r.Odoc_model.Location_.value) lst)
 
 and string_of_paragraph lst =
   H.span
-    (List.map (fun elt -> string_of_element elt.Odoc_model.Location_.value) lst)
+    (ExtLib.List.map (fun elt -> string_of_element elt.Odoc_model.Location_.value) lst)
 
 let string_of_doc = function
   | `Paragraph p -> Some (H.p [ string_of_paragraph p ])

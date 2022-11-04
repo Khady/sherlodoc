@@ -70,7 +70,7 @@ let minimize = function
       let used = Array.make (List.length (List.hd arr)) false in
       let arr =
         Array.map (fun lst ->
-            let lst = (1, None) :: List.mapi (fun i x -> x, Some i) lst in
+            let lst = (1, None) :: ExtLib.List.mapi (fun i x -> x, Some i) lst in
             List.sort Stdlib.compare lst)
         @@ Array.of_list arr
       in
@@ -132,17 +132,17 @@ let score_type query_type paths =
   | _, [] | [], _ -> 0
   | _ ->
       let arr =
-        List.map
+        ExtLib.List.map
           (fun p ->
             let p = List.rev p in
-            List.map (fun q -> distance (List.rev q) p) query_type)
+            ExtLib.List.map (fun q -> distance (List.rev q) p) query_type)
           paths
       in
       minimize arr
 
 let list query_name query_type results =
   let results =
-    List.map
+    ExtLib.List.map
       (fun a ->
         let open Elt in
         let name_cost = score_name query_name a.name in

@@ -9,7 +9,7 @@ let of_filename f =
   in
   module_name, f
 
-let filenames () = List.map of_filename (Files.list odoc_directory)
+let filenames () = ExtLib.List.map of_filename (Files.list odoc_directory)
 
 let () =
   let files = filenames () in
