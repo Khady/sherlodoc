@@ -22,7 +22,7 @@ let rec paths_arrow ~prefix ~sgn = function
         | [] -> [ prefix ]
         | _ ->
             List.concat
-            @@ List.mapi
+            @@ ExtLib.List.mapi
                  (fun i arg ->
                    let prefix = string_of_int i :: prefix in
                    paths_arrow ~prefix ~sgn arg)
@@ -30,7 +30,7 @@ let rec paths_arrow ~prefix ~sgn = function
       end
   | Tuple args ->
       List.concat
-      @@ List.mapi
+      @@ ExtLib.List.mapi
            (fun i arg ->
              let prefix = (string_of_int i ^ "*") :: prefix in
              paths_arrow ~prefix ~sgn arg)
@@ -48,14 +48,14 @@ let rec paths ~prefix ~sgn = function
         | [] -> [ prefix ]
         | _ ->
             List.concat
-            @@ List.mapi
+            @@ ExtLib.List.mapi
                  (fun i arg ->
                    let prefix = string_of_int i :: prefix in
                    paths ~prefix ~sgn arg)
                  args
       end
   | Tuple args ->
-      List.concat @@ List.map (fun arg -> paths ~prefix ~sgn arg) args
+      List.concat @@ ExtLib.List.map (fun arg -> paths ~prefix ~sgn arg) args
 
 let rec show = function
   | Arrow (a, b) -> show_parens a ^ " -> " ^ show b

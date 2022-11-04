@@ -82,7 +82,7 @@ let rec paths ~prefix ~sgn = function
         | [] -> [ prefix ]
         | _ ->
             rev_concat
-            @@ List.mapi
+            @@ ExtLib.List.mapi
                  (fun i arg ->
                    let prefix = Cache_name.memo (string_of_int i) :: prefix in
                    paths ~prefix ~sgn arg)
@@ -90,7 +90,7 @@ let rec paths ~prefix ~sgn = function
       end
   | Tuple args ->
       rev_concat
-      @@ List.mapi (fun i arg ->
+      @@ ExtLib.List.mapi (fun i arg ->
              let prefix = Cache_name.memo (string_of_int i ^ "*") :: prefix in
              paths ~prefix ~sgn arg)
       @@ args
@@ -106,7 +106,7 @@ let rec type_paths ~prefix ~sgn = function
         (type_paths ~prefix ~sgn b)
   | Constr (name, args) ->
       rev_concat
-      @@ List.map (fun name ->
+      @@ ExtLib.List.map (fun name ->
              let name = String.concat "." name in
              let prefix = name :: Types.string_of_sgn sgn :: prefix in
              begin
@@ -114,14 +114,14 @@ let rec type_paths ~prefix ~sgn = function
                | [] -> [ prefix ]
                | _ ->
                    rev_concat
-                   @@ List.mapi
+                   @@ ExtLib.List.mapi
                         (fun i arg ->
                           let prefix = string_of_int i :: prefix in
                           type_paths ~prefix ~sgn arg)
                         args
              end)
       @@ all_type_names name
-  | Tuple args -> rev_concat @@ List.map (type_paths ~prefix ~sgn) @@ args
+  | Tuple args -> rev_concat @@ ExtLib.List.map (type_paths ~prefix ~sgn) @@ args
   | _ -> []
 
 let save_item ~pkg ~path_list ~path name type_ doc =
@@ -162,10 +162,10 @@ let save_item ~pkg ~path_list ~path name type_ doc =
       (Db.list_of_string (Odoc_model.Names.ValueName.to_string name))
       ('.' :: path_list)
   in
-  let my_full_name = List.map Char.lowercase_ascii my_full_name in
+  let my_full_name = ExtLib.List.map Char.lowercase_ascii my_full_name in
   Db.store_name my_full_name str_type ;
   let type_paths = type_paths ~prefix:[] ~sgn:Pos type_ in
-  Db.store_all str_type (List.map (List.map Cache_name.memo) type_paths)
+  Db.store_all str_type (ExtLib.List.map (ExtLib.List.map Cache_name.memo) type_paths)
 
 let rec item ~pkg ~path_list ~path =
   let open Odoc_model.Lang in
@@ -233,7 +233,7 @@ let run ~odoc_directory (root_name, filename) =
     | _ ->
         invalid_arg (Printf.sprintf "not a valid package/version? %S" filename)
   in
-  Format.printf "%s %s => %s@." package version root_name ;
+  Printf.printf "%s %s => %s\n%!" package version root_name ;
   let filename = Filename.concat odoc_directory filename in
   let fpath = Result.get_ok @@ Fpath.of_string filename in
   let t =

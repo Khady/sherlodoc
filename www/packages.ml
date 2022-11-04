@@ -145,14 +145,14 @@ let html =
   div
     ~a:[ a_class [ "categories" ] ]
     (M.bindings packages
-    |> List.map (fun (category, packages) ->
+    |> ExtLib.List.map (fun (category, packages) ->
            div
              ~a:[ a_class [ "category" ] ]
              [ h3 [ txt (if category = "" then "Not classified" else category) ]
              ; div
                  ~a:[ a_class [ "packages" ] ]
                  (S.elements packages
-                 |> List.map (fun package ->
+                 |> ExtLib.List.map (fun package ->
                         a
                           ~a:
                             [ a_href ("https://ocaml.org/p/" ^ package.name)

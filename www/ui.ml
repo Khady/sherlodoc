@@ -33,7 +33,7 @@ let render ~pretty results =
             ~a:[ a_class [ "query" ] ]
             [ txt "Results for "; code [ txt pretty ] ]
         ; ul ~a:[ a_class [ "found" ] ]
-          @@ List.map (fun r -> li (render_result r)) results
+          @@ ExtLib.List.map (fun r -> li (render_result r)) results
         ]
 
 let ajax_reload =

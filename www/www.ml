@@ -37,7 +37,7 @@ let api query =
 
 open Lwt.Syntax
 
-let get_query params = Option.value ~default:"" (Dream.query params "q")
+let get_query params = Stdlib.Option.value ~default:"" (Dream.query params "q")
 
 let root ~query fn _params =
   let* result = fn query in
